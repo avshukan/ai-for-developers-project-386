@@ -11,8 +11,8 @@ Agents must optimize for clarity, small steps, explicit contracts, and documente
 
 ## Project Stack
 
-* Frontend: Vue 3 + Vite
-* Backend: Go
+* Frontend: Vue 3 + Vite SPA
+* Backend: Go API
 * API design: TypeSpec
 * Generated API format: OpenAPI
 * Runtime/package format: Docker
@@ -21,31 +21,9 @@ Agents must optimize for clarity, small steps, explicit contracts, and documente
 
 Do not replace the stack without an ADR.
 
-## Core Product Scope
-
-The MVP allows:
-
-* A host to publish available 30-minute meeting slots
-* A guest to view available slots
-* A guest to book a slot with name and email
-* A host to view upcoming bookings
-
-The MVP does not include:
-
-* Authentication
-* User accounts
-* External calendar integrations
-* Payments
-* Notifications
-* Rescheduling
-* Cancellation
-* Multiple hosts
-* Teams
-* Time zone complexity beyond the documented MVP rules
-
 ## Sources of Truth
 
-Use these files as primary sources of truth.
+Use these files as primary sources of truth:
 
 * `AGENTS.md` — rules for AI agents
 * `README.md` — short project overview
@@ -58,8 +36,10 @@ Use these files as primary sources of truth.
 * `api/main.tsp` — source of truth for the API contract
 * Generated OpenAPI files — generated artifacts only
 
+Generated OpenAPI files must not be edited manually.
+
 Some files may not exist yet.
-If a required file is missing, create a minimal version or mark the related section as `TBD`.
+Create a missing file only when it is required by the current workflow step.
 
 ## Design First Workflow
 
@@ -78,33 +58,43 @@ Follow this order:
 
 Do not implement API behavior before the API contract is defined in TypeSpec.
 
+Do not silently choose behavior for unresolved product or domain `TBD` items.
+Critical `TBD` items that affect API behavior must be resolved in documentation before TypeSpec is written.
+
+Every API behavior must trace to a documented user scenario or business rule.
+
 ## TypeSpec Rules
 
 `api/main.tsp` is the source of truth for the API.
 
 Rules:
 
-* Do not manually edit generated OpenAPI files.
 * Change the API through TypeSpec first.
 * Regenerate OpenAPI after TypeSpec changes.
 * Keep endpoint names, models, and examples aligned with the glossary.
 * Do not introduce API fields that are not documented in the domain model.
+* Do not manually edit generated OpenAPI files.
 * If TypeSpec tooling is not configured yet, mark commands as `TBD` and propose the missing setup.
+
+Generated OpenAPI location: `TBD`.
 
 ## Glossary Rules
 
-Use one shared language across documentation, API, frontend, backend, and tests.
+Use one shared language across documentation, TypeSpec, API models, frontend, backend, and tests.
 
-Initial terms:
+The source of truth for terminology is `docs/glossary.md`.
 
-* `Host` — the calendar owner who publishes availability and views bookings
-* `Guest` — the person who books a meeting
-* `Slot` — a 30-minute time interval available for booking
-* `Booking` — a confirmed reservation of a slot by a guest
-* `Availability` — the host's available time range
-* `Meeting` — the scheduled call represented by a booking
+Do not introduce new domain terms or synonyms without updating the glossary first.
 
-Do not introduce synonyms such as `Event`, `Appointment`, `Reservation`, or `CalendarItem` unless the glossary is updated first.
+## Product Scope Rules
+
+The source of truth for product behavior is `docs/product.md`.
+
+Keep the MVP small.
+Do not clone Cal.com beyond the documented learning scope.
+
+Authentication is out of scope for the MVP.
+Host pages are public in the MVP. This is an intentional learning simplification, not a production security model.
 
 ## Grill Before Build
 
@@ -115,7 +105,7 @@ Check:
 * Does it fit the MVP scope?
 * Does it introduce hidden complexity?
 * Does it conflict with the glossary?
-* Does it require a new ADR?
+* Does it require an ADR?
 * Does it change the API contract?
 * Does it affect frontend/backend independence?
 * Can it be tested as a user scenario?
@@ -126,7 +116,7 @@ If the idea is risky, document the concern before implementation.
 
 Use ADRs for important technical or product decisions.
 
-Create an ADR when changing:
+Create an ADR for significant changes to:
 
 * Stack
 * API design approach
@@ -134,8 +124,10 @@ Create an ADR when changing:
 * Deployment model
 * Testing strategy
 * Authentication decision
-* Domain model structure
+* Domain boundaries
 * Major architecture boundaries
+
+Do not create ADRs for every small domain-model edit.
 
 ADR format:
 
@@ -170,7 +162,7 @@ Create a new ADR if a decision changes.
 
 Agents must use `make` targets instead of guessing commands.
 
-Expected targets:
+Expected future targets:
 
 ```bash
 make install
@@ -188,8 +180,10 @@ make check
 If a target does not exist yet:
 
 * Do not invent a different command silently.
-* Either add the missing target or mark it as `TBD`.
-* Prefer creating a Makefile early in the project.
+* Add the missing target only when it is relevant to the current task.
+* Otherwise mark it as `TBD`.
+
+Prefer creating a Makefile early in the project.
 
 ## Testing Rules
 
@@ -197,6 +191,7 @@ Tests must focus on behavior, not implementation details.
 
 Key scenarios:
 
+* Host can publish availability
 * Guest can view available slots
 * Guest can book an available slot
 * Booked slot becomes unavailable
@@ -243,7 +238,6 @@ Frontend is a SPA.
 Rules:
 
 * Use Vue 3 + Vite.
-* Do not use Nuxt.
 * Do not use server-side rendering.
 * Communicate with the backend only through the documented API.
 * Do not hardcode backend behavior that is not in the API contract.
@@ -310,7 +304,7 @@ A new agent must be able to understand the project by reading:
 4. `docs/glossary.md`
 5. Relevant task-specific docs
 
-If `docs/onboarding.md` is missing, create it early.
+If `docs/onboarding.md` is missing, create it when onboarding becomes part of the workflow.
 
 ## Change Size
 
