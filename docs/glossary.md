@@ -53,7 +53,7 @@ For MVP:
 
 * event types are created by the host
 * event type duration is used to produce bookable slots
-* the expected duration is 30 minutes unless the course task requires otherwise
+* in MVP, event type duration is fixed at 30 minutes
 * guests can view available event types
 * guests choose one event type before selecting a slot
 
@@ -79,7 +79,7 @@ For MVP:
 
 ### Slot
 
-A time interval derived from availability and event type duration.
+A 30-minute time interval derived from availability.
 
 Example:
 
@@ -143,7 +143,7 @@ Host creates Event Type
 Host publishes Availability
 Guest views Event Types
 Guest selects Event Type
-Availability and Event Type produce Slots
+Availability produces 30-minute Slots
 Guest selects Slot
 Guest creates Booking
 Booking makes selected time unavailable
@@ -156,7 +156,7 @@ Host views Bookings
 * Use `Guest` for the person booking the meeting.
 * Use `Event Type` for the bookable meeting type.
 * Use `Availability` only for a host-published available time range.
-* Use `Slot` only for a bookable time interval.
+* Use `Slot` only for a 30-minute bookable time interval.
 * Use `Booking` for a confirmed booking.
 * Use `Meeting` only when describing the real-world call.
 * Do not introduce new domain terms without updating this file.
@@ -181,10 +181,10 @@ The time window in which guests can see available slots.
 
 For MVP:
 
-* guests see free slots for the next 14 days
+* guests see available slots for the next 14 days
 
 ## TBD
 
-* Whether event type duration is fixed at 30 minutes or configurable
+* Whether configurable event type duration is needed after the first MVP
 * Exact date/time display format in UI
 * Whether availability editing is needed after the first MVP

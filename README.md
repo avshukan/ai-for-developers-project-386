@@ -40,8 +40,8 @@ The application allows:
 * a predefined host to publish available time
 * a guest to view available event types
 * a guest to choose an event type
-* a guest to see free slots for the next 14 days
-* a guest to book a free slot
+* a guest to see available slots for the next 14 days
+* a guest to book an available slot
 * the host to view upcoming bookings
 
 The MVP has no registration, authentication, personal accounts, or external calendar integrations.

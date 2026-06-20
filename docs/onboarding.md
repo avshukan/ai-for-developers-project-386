@@ -26,8 +26,8 @@ The application allows:
 * a predefined host to publish available time
 * a guest to view available event types
 * a guest to choose an event type
-* a guest to see free slots for the next 14 days
-* a guest to book a free slot with name and email
+* a guest to see available slots for the next 14 days
+* a guest to book an available slot with name and email
 * a host to view upcoming bookings
 
 The project intentionally avoids advanced production features.
@@ -135,8 +135,8 @@ The first complete version must support:
 3. Guest opens the booking page.
 4. Guest sees available event types.
 5. Guest selects an event type.
-6. Guest sees free slots for the next 14 days.
-7. Guest selects a free slot.
+6. Guest sees available slots for the next 14 days.
+7. Guest selects an available slot.
 8. Guest enters name and email.
 9. Guest confirms booking.
 10. Selected time becomes unavailable.

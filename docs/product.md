@@ -6,7 +6,7 @@ This project is a small meeting scheduling web application inspired by Cal.com.
 
 The goal is to build a complete MVP using a Design First and API-first workflow.
 
-The application allows a host to create event types, publish available time, and allows a guest to book a free slot.
+The application allows a host to create event types, publish available time, and allows a guest to book an available slot.
 
 ## Product Goal
 
@@ -46,7 +46,7 @@ The guest wants to:
 
 * see available event types
 * choose an event type
-* see free slots for the next 14 days
+* see available slots for the next 14 days
 * choose a convenient slot
 * enter contact details
 * confirm the booking
@@ -58,8 +58,8 @@ The MVP includes:
 * creating an event type
 * viewing available event types
 * creating a host availability range
-* deriving slots from availability and event type duration
-* showing free slots for the next 14 days
+* deriving 30-minute slots from availability
+* showing available slots for the next 14 days
 * booking an available slot
 * collecting guest name
 * collecting guest email
@@ -105,16 +105,16 @@ The MVP does not include:
 3. Host enters an availability end time.
 4. Host submits the availability range.
 5. System saves the availability range.
-6. System derives bookable slots from availability and event type duration.
-7. Guest can see derived free slots on the booking page.
+6. System derives 30-minute slots from the availability range.
+7. Guest can see derived available slots on the booking page.
 
 ## Main Guest Scenario
 
 1. Guest opens the booking page.
 2. Guest sees available event types.
 3. Guest selects an event type.
-4. Guest sees free slots for the next 14 days.
-5. Guest selects one free slot.
+4. Guest sees available slots for the next 14 days.
+5. Guest selects one available slot.
 6. Guest enters name and email.
 7. Guest confirms the booking.
 8. System creates the booking.
@@ -136,8 +136,7 @@ The MVP does not include:
 * Guest can view available event types.
 * Guest must choose an event type before selecting a slot.
 * Event type duration is used to derive bookable slots.
-* Event type duration must be positive.
-* The default expected duration is 30 minutes.
+* In MVP, event type duration is fixed at 30 minutes.
 
 ### Availability Rules
 
@@ -150,9 +149,11 @@ The MVP does not include:
 
 ### Slot Rules
 
-* Slots are derived from availability and event type duration.
-* Guests see free slots for the next 14 days.
-* A booked time must not be shown as available.
+* Slot duration is 30 minutes.
+* A slot is derived from availability.
+* Guests see available slots for the next 14 days.
+* A slot can have only one booking.
+* A booked slot must not be shown as available.
 * Past slots must not be bookable.
 
 ### Booking Rules
@@ -161,7 +162,7 @@ The MVP does not include:
 * Guest email is required.
 * Guest email must be valid enough for MVP validation.
 * Booking must reference an event type.
-* Booking must reference a free slot.
+* Booking must reference an available slot.
 * Booking must fail if the selected slot is already booked.
 * Booking must fail if the selected slot is in the past.
 * Double booking must be prevented on the backend.
@@ -215,7 +216,7 @@ Shows:
 
 * available event types
 * selected event type
-* free slots for the next 14 days
+* available slots for the next 14 days
 * selected slot
 * guest name field
 * guest email field
@@ -244,7 +245,7 @@ The MVP is complete when:
 * host can create an availability range
 * guest can see available event types
 * guest can choose an event type
-* guest can see free slots for the next 14 days
+* guest can see available slots for the next 14 days
 * guest can book a slot
 * booked time disappears from available slots
 * host can see the booking
@@ -260,4 +261,4 @@ The MVP is complete when:
 * Final deployment target
 * Testing stack
 * Docker topology
-* Whether event type duration can be changed after creation
+* Whether configurable event type duration is needed after the first MVP
