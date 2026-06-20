@@ -22,57 +22,68 @@ This is a small meeting scheduling application inspired by Cal.com.
 
 The application allows:
 
-* A host to publish available 30-minute slots
-* A guest to view available slots
-* A guest to book a slot with name and email
-* A host to view upcoming bookings
+* a predefined host to create event types
+* a predefined host to publish available time
+* a guest to view available event types
+* a guest to choose an event type
+* a guest to see free slots for the next 14 days
+* a guest to book a free slot with name and email
+* a host to view upcoming bookings
 
-The project intentionally avoids advanced features.
+The project intentionally avoids advanced production features.
 
 Out of scope:
 
-* Authentication
-* User accounts
-* External calendars
-* Payments
-* Notifications
-* Rescheduling
-* Cancellation
-* Multiple hosts
-* Teams
+* registration
+* authentication
+* personal accounts
+* external calendars
+* payments
+* notifications
+* cancellation
+* rescheduling
+* multiple hosts
+* teams
+* recurring events
 
-## Main Workflow
+## Course Workflow
 
 The project follows Design First.
 
 Work order:
 
 ```text
-Product docs
-→ Domain model
-→ TypeSpec API contract
-→ Generated OpenAPI
-→ Frontend and backend implementation
-→ Tests
-→ Docker
-→ Deployment
+study Cal.com domain
+→ define product behavior
+→ define shared terminology
+→ define domain model
+→ create TypeSpec API contract
+→ generate OpenAPI
+→ implement frontend and backend independently
+→ test core scenarios
+→ build and run with Docker
+→ prepare deployment
 ```
 
 Do not start implementation before the relevant contract and documentation exist.
 
 ## Source of Truth
 
+* Agent workflow: `AGENTS.md`
+* Project overview: `README.md`
 * Domain terminology: `docs/glossary.md`
 * Product behavior: `docs/product.md`
 * Business rules: `docs/domain.md`
-* API contract: `api/main.tsp`
+* API contract source: `api/main.tsp`
 * Generated OpenAPI: generated artifact only
-* Agent workflow: `AGENTS.md`
+
+OpenAPI must be generated from TypeSpec.
+Generated OpenAPI files must not be edited manually.
 
 ## Current Stack
 
-* Frontend: Vue 3 + Vite
-* Backend: Go
+* Frontend: Vue 3 + Vite SPA
+* Backend: Go API
 * API design: TypeSpec
 * API output: OpenAPI
 * Runtime: Docker
@@ -99,7 +110,7 @@ make docker-run
 make check
 ```
 
-If a command is missing, add it or mark it as `TBD`.
+If a command is missing, add it only when it is relevant to the current workflow step. Otherwise mark it as `TBD`.
 
 ## First Project Milestones
 
@@ -113,27 +124,39 @@ If a command is missing, add it or mark it as `TBD`.
 8. Implement core booking flow.
 9. Add tests.
 10. Build Docker image.
+11. Prepare deployment.
 
 ## MVP User Scenarios
 
 The first complete version must support:
 
-1. Guest opens booking page.
-2. Guest sees available 30-minute slots.
-3. Guest selects a slot.
-4. Guest enters name and email.
-5. Guest confirms booking.
-6. Slot becomes unavailable.
-7. Host opens bookings page.
-8. Host sees upcoming bookings.
+1. Host creates an event type.
+2. Host publishes available time.
+3. Guest opens the booking page.
+4. Guest sees available event types.
+5. Guest selects an event type.
+6. Guest sees free slots for the next 14 days.
+7. Guest selects a free slot.
+8. Guest enters name and email.
+9. Guest confirms booking.
+10. Selected time becomes unavailable.
+11. Host opens bookings page.
+12. Host sees upcoming bookings across all event types.
+
+## Core Constraint
+
+Two bookings cannot exist for the same time, even for different event types.
+
+This rule must be enforced by the backend.
 
 ## Notes for Agents
 
 Before changing code:
 
-* Read `AGENTS.md`
-* Check the glossary
-* Check whether docs or TypeSpec must change first
-* Keep changes small
-* Use `make`
-* Report assumptions and remaining `TBD` items
+* read `AGENTS.md`
+* check the glossary
+* check product and domain docs
+* check whether TypeSpec must change first
+* keep changes small
+* use `make`
+* report assumptions and remaining `TBD` items

@@ -4,10 +4,16 @@
 
 This file defines how AI agents must work in this repository.
 
-The project is a small meeting scheduling web application inspired by Cal.com.
-The main goal is to practice AI-assisted development, Design First, API-first workflow, Docker-based delivery, and end-to-end validation.
+It is an operational guide for agents, not a product specification, glossary, or architecture document.
 
-Agents must optimize for clarity, small steps, explicit contracts, and documented decisions.
+Agents must optimize for:
+
+* Design First workflow
+* small changes
+* explicit contracts
+* documented decisions
+* reproducible commands
+* minimal hidden assumptions
 
 ## Project Stack
 
@@ -20,6 +26,23 @@ Agents must optimize for clarity, small steps, explicit contracts, and documente
 * Deployment: TBD
 
 Do not replace the stack without an ADR.
+
+## Course Context
+
+This is a learning project.
+
+The course requires:
+
+* studying the Cal.com domain
+* defining behavior before implementation
+* defining the API contract before frontend/backend implementation
+* using TypeSpec as the source of truth for the API
+* generating OpenAPI from TypeSpec
+* implementing frontend and backend independently
+* testing core user scenarios
+* building and running the application in Docker
+
+Do not turn this into a production-grade scheduling system unless documentation explicitly changes the scope.
 
 ## Sources of Truth
 
@@ -34,9 +57,10 @@ Use these files as primary sources of truth:
 * `docs/architecture.md` — technical architecture
 * `docs/adr/` — architecture decision records
 * `api/main.tsp` — source of truth for the API contract
-* Generated OpenAPI files — generated artifacts only
+* generated OpenAPI files — generated artifacts only
 
-Generated OpenAPI files must not be edited manually.
+Do not duplicate detailed product rules, glossary definitions, or architecture decisions in this file.
+Link to the authoritative document instead.
 
 Some files may not exist yet.
 Create a missing file only when it is required by the current workflow step.
@@ -49,7 +73,7 @@ Follow this order:
 2. Read the relevant documentation.
 3. Check the glossary.
 4. Challenge the idea before implementation.
-5. Update documentation if the behavior or decision changes.
+5. Update documentation if behavior or decisions change.
 6. Update TypeSpec if the API changes.
 7. Generate OpenAPI from TypeSpec.
 8. Implement code.
@@ -71,30 +95,25 @@ Rules:
 
 * Change the API through TypeSpec first.
 * Regenerate OpenAPI after TypeSpec changes.
-* Keep endpoint names, models, and examples aligned with the glossary.
-* Do not introduce API fields that are not documented in the domain model.
+* Keep endpoint names, models, and examples aligned with `docs/glossary.md`.
+* Do not introduce API fields that are not documented in `docs/domain.md`.
 * Do not manually edit generated OpenAPI files.
 * If TypeSpec tooling is not configured yet, mark commands as `TBD` and propose the missing setup.
 
 Generated OpenAPI location: `TBD`.
 
-## Glossary Rules
+## Documentation Responsibility
 
-Use one shared language across documentation, TypeSpec, API models, frontend, backend, and tests.
+Keep responsibilities separated:
 
-The source of truth for terminology is `docs/glossary.md`.
+* Product scope and user scenarios belong in `docs/product.md`.
+* Domain terms belong in `docs/glossary.md`.
+* Business rules and invariants belong in `docs/domain.md`.
+* Architecture decisions belong in `docs/architecture.md` or `docs/adr/`.
+* Agent workflow rules belong in `AGENTS.md`.
 
-Do not introduce new domain terms or synonyms without updating the glossary first.
-
-## Product Scope Rules
-
-The source of truth for product behavior is `docs/product.md`.
-
-Keep the MVP small.
-Do not clone Cal.com beyond the documented learning scope.
-
-Authentication is out of scope for the MVP.
-Host pages are public in the MVP. This is an intentional learning simplification, not a production security model.
+Avoid copying the same content across files.
+If a rule belongs to another document, reference that document instead.
 
 ## Grill Before Build
 
@@ -102,9 +121,9 @@ Before making domain, API, or architecture changes, challenge the proposal.
 
 Check:
 
-* Does it fit the MVP scope?
-* Does it introduce hidden complexity?
-* Does it conflict with the glossary?
+* Does it fit the course task?
+* Does it fit `docs/product.md`?
+* Does it conflict with `docs/glossary.md`?
 * Does it require an ADR?
 * Does it change the API contract?
 * Does it affect frontend/backend independence?
@@ -189,23 +208,15 @@ Prefer creating a Makefile early in the project.
 
 Tests must focus on behavior, not implementation details.
 
-Key scenarios:
-
-* Host can publish availability
-* Guest can view available slots
-* Guest can book an available slot
-* Booked slot becomes unavailable
-* Host can view upcoming bookings
-* Invalid booking input is rejected
-* Double booking is prevented
+Test scenarios must come from `docs/product.md` and `docs/domain.md`.
 
 Testing stack is `TBD`.
 
 Expected future test layers:
 
-* Backend API tests
-* Frontend component or integration tests
-* End-to-end tests for core user scenarios
+* backend API tests
+* frontend component or integration tests
+* end-to-end tests for core user scenarios
 
 ## Dependency Rules
 
@@ -213,10 +224,10 @@ Do not add production dependencies casually.
 
 Before adding a dependency, explain:
 
-* Why it is needed
-* Why standard library or existing dependencies are not enough
-* Whether it affects Docker image size or deployment
-* Whether it adds maintenance risk
+* why it is needed
+* why standard library or existing dependencies are not enough
+* whether it affects Docker image size or deployment
+* whether it adds maintenance risk
 
 Prefer simple, boring dependencies.
 
@@ -251,10 +262,9 @@ Rules:
 
 * Follow the API contract generated from TypeSpec.
 * Keep business rules explicit.
-* Do not introduce authentication unless the product scope changes through ADR.
-* Validate booking input on the backend.
-* Prevent double booking on the backend.
+* Validate input on the backend.
 * Keep storage choice documented.
+* Do not introduce authentication unless the product scope changes through ADR.
 
 Database choice is `TBD`.
 
@@ -270,29 +280,6 @@ Rules:
 * Do not rely on local machine state.
 
 Final deployment target is `TBD`.
-
-## Documentation Rules
-
-Documentation must be updated before or together with behavior changes.
-
-Keep docs short and practical.
-
-Preferred docs structure:
-
-```text
-docs/
-  onboarding.md
-  glossary.md
-  product.md
-  domain.md
-  architecture.md
-  api.md
-  testing.md
-  adr/
-```
-
-If documentation becomes long, split it.
-Do not duplicate the same rule in many files.
 
 ## Onboarding Rule
 
@@ -312,12 +299,12 @@ Prefer small changes.
 
 A good agent step should usually change one of these:
 
-* One documentation topic
-* One API contract area
-* One backend feature
-* One frontend feature
-* One test scenario
-* One infrastructure concern
+* one documentation topic
+* one API contract area
+* one backend feature
+* one frontend feature
+* one test scenario
+* one infrastructure concern
 
 Avoid large mixed changes.
 
@@ -338,12 +325,12 @@ Rules:
 
 Before finishing a task, report:
 
-* What changed
-* Which files changed
-* Which commands were run
-* Which checks passed or failed
-* What remains `TBD`
-* Any risks or assumptions
+* what changed
+* which files changed
+* which commands were run
+* which checks passed or failed
+* what remains `TBD`
+* any risks or assumptions
 
 For implementation tasks, prefer running:
 
@@ -359,11 +346,11 @@ This file should evolve during the project.
 
 If an agent notices:
 
-* A repeated mistake
-* A missing command
-* An unclear convention
-* A useful workflow rule
-* A recurring source of confusion
+* a repeated mistake
+* a missing command
+* an unclear convention
+* a useful workflow rule
+* a recurring source of confusion
 
 then the agent should propose an update to `AGENTS.md`.
 

@@ -3,29 +3,52 @@
 
 # Call Booking
 
-A simple meeting scheduling application inspired by Cal.com.
+A small meeting scheduling web application inspired by Cal.com.
 
-The project is built as part of a Design First workflow. The API contract is defined before implementation and serves as the source of truth for independent frontend and backend development.
+This is a learning project focused on Design First, API-first development, AI-assisted implementation, Docker delivery, and testing of core user scenarios.
 
-## Goals
+## Project Goal
 
-* Learn AI-assisted software development
-* Practice Design First and API-first workflow
-* Build a complete web application from specification to deployment
-* Keep frontend and backend development independent through an explicit API contract
+The goal is to build a complete small web application:
+
+1. Understand the scheduling domain.
+2. Define product behavior.
+3. Define the API contract.
+4. Implement frontend and backend independently.
+5. Cover core scenarios with tests.
+6. Package and run the application with Docker.
+7. Prepare the application for deployment.
+
+## Course Context
+
+The project is developed with AI agents as the main implementation tool.
+
+The human role is to:
+
+* define tasks
+* review results
+* improve documentation and contracts
+* guide the project step by step
+
+The project follows a Design First workflow.
 
 ## MVP Scope
 
 The application allows:
 
-* A host to publish available time ranges for meetings
-* A guest to view available 30-minute slots
-* A guest to book a slot by providing name and email
-* A host to view upcoming bookings
+* a predefined host to create event types
+* a predefined host to publish available time
+* a guest to view available event types
+* a guest to choose an event type
+* a guest to see free slots for the next 14 days
+* a guest to book a free slot
+* the host to view upcoming bookings
 
-The project intentionally excludes authentication, user accounts, external calendar integrations, payments, notifications, cancellation, rescheduling, teams, and recurring events.
+The MVP has no registration, authentication, personal accounts, or external calendar integrations.
 
-Host pages are public in the MVP. This is an intentional learning simplification, not a production security model.
+## Core Rule
+
+Two bookings cannot exist for the same time, even for different event types.
 
 ## Technology Stack
 
@@ -37,7 +60,8 @@ Host pages are public in the MVP. This is an intentional learning simplification
 * Tests: TBD
 * Deployment: TBD
 
-Generated OpenAPI files must not be edited manually. API changes must be made through TypeSpec first.
+OpenAPI is generated from TypeSpec.
+Generated OpenAPI files must not be edited manually.
 
 ## Documentation
 
@@ -54,13 +78,17 @@ Some files may be missing at the beginning of the project and can be created whe
 
 ## Development Process
 
-1. Define product behavior.
-2. Define domain language and domain model.
-3. Design the API contract in TypeSpec.
-4. Generate OpenAPI from TypeSpec.
-5. Implement frontend and backend independently.
-6. Cover key scenarios with tests.
-7. Package and run the application with Docker.
-8. Deploy the application.
+```text
+product behavior
+→ domain language
+→ domain model
+→ TypeSpec API contract
+→ generated OpenAPI
+→ frontend implementation
+→ backend implementation
+→ tests
+→ Docker
+→ deployment
+```
 
 Do not start implementation before the relevant documentation and API contract exist.

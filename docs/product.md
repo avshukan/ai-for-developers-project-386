@@ -6,7 +6,7 @@ This project is a small meeting scheduling web application inspired by Cal.com.
 
 The goal is to build a complete MVP using a Design First and API-first workflow.
 
-The application allows a host to publish available time ranges and allows a guest to book a 30-minute meeting slot.
+The application allows a host to create event types, publish available time, and allows a guest to book a free slot.
 
 ## Product Goal
 
@@ -25,22 +25,29 @@ Build a small but complete application that demonstrates:
 
 The host owns the calendar.
 
+For MVP:
+
+* there is one predefined host
+* there is no authentication
+* host pages are public
+* this is an intentional learning simplification, not a production security model
+
 The host wants to:
 
-* publish available time for meetings
-* see upcoming bookings
-
-For MVP, the host is not authenticated. Host pages are public.
-This is an intentional learning simplification and not a production security model.
+* create event types
+* publish available time
+* see upcoming bookings across all event types
 
 ### Guest
 
-The guest books a meeting.
+The guest books a meeting without an account.
 
 The guest wants to:
 
-* see available slots
-* choose a convenient time
+* see available event types
+* choose an event type
+* see free slots for the next 14 days
+* choose a convenient slot
 * enter contact details
 * confirm the booking
 
@@ -48,13 +55,15 @@ The guest wants to:
 
 The MVP includes:
 
+* creating an event type
+* viewing available event types
 * creating a host availability range
-* deriving 30-minute slots from availability
-* viewing available 30-minute slots
+* deriving slots from availability and event type duration
+* showing free slots for the next 14 days
 * booking an available slot
 * collecting guest name
 * collecting guest email
-* preventing double booking
+* preventing double booking across all event types
 * viewing upcoming bookings as host
 
 ## Out of Scope
@@ -79,6 +88,16 @@ The MVP does not include:
 * availability deletion
 * complex time zone management
 
+## Main Host Event Type Scenario
+
+1. Host opens the event types page.
+2. Host enters event type title.
+3. Host enters event type description.
+4. Host enters event type duration.
+5. Host submits the event type.
+6. System creates the event type.
+7. Guest can see the event type on the public booking page.
+
 ## Main Host Availability Scenario
 
 1. Host opens the availability page.
@@ -86,43 +105,54 @@ The MVP does not include:
 3. Host enters an availability end time.
 4. Host submits the availability range.
 5. System saves the availability range.
-6. System derives 30-minute slots from the availability range.
-7. Guest can see derived available slots on the booking page.
+6. System derives bookable slots from availability and event type duration.
+7. Guest can see derived free slots on the booking page.
 
 ## Main Guest Scenario
 
 1. Guest opens the booking page.
-2. Guest sees available 30-minute slots.
-3. Guest selects one available slot.
-4. Guest enters name and email.
-5. Guest confirms the booking.
-6. System creates the booking.
-7. The selected slot becomes unavailable.
-8. Guest sees booking confirmation.
+2. Guest sees available event types.
+3. Guest selects an event type.
+4. Guest sees free slots for the next 14 days.
+5. Guest selects one free slot.
+6. Guest enters name and email.
+7. Guest confirms the booking.
+8. System creates the booking.
+9. The selected time becomes unavailable for all event types.
+10. Guest sees booking confirmation.
 
 ## Main Host Bookings Scenario
 
 1. Host opens the bookings page.
-2. Host sees upcoming bookings.
-3. Each booking shows the slot time, guest name, and guest email.
+2. Host sees upcoming bookings across all event types.
+3. Each booking shows event type, slot time, guest name, and guest email.
 
 ## Business Rules
+
+### Event Type Rules
+
+* Event type has id, title, description, and duration.
+* Event type is created by the host.
+* Guest can view available event types.
+* Guest must choose an event type before selecting a slot.
+* Event type duration is used to derive bookable slots.
+* Event type duration must be positive.
+* The default expected duration is 30 minutes.
 
 ### Availability Rules
 
 * Availability has a start time and an end time.
+* Availability is created by the host.
 * Availability end time must be after start time.
-* Availability is split into 30-minute slots.
-* Only full 30-minute slots are bookable.
+* Availability is used to derive bookable slots.
 * Recurring availability is out of scope.
 * Editing and deleting availability are out of scope for MVP.
 
 ### Slot Rules
 
-* Slot duration is 30 minutes.
-* A slot is derived from availability.
-* A slot can have only one booking.
-* A booked slot must not be shown as available.
+* Slots are derived from availability and event type duration.
+* Guests see free slots for the next 14 days.
+* A booked time must not be shown as available.
 * Past slots must not be bookable.
 
 ### Booking Rules
@@ -130,9 +160,12 @@ The MVP does not include:
 * Guest name is required.
 * Guest email is required.
 * Guest email must be valid enough for MVP validation.
+* Booking must reference an event type.
+* Booking must reference a free slot.
 * Booking must fail if the selected slot is already booked.
 * Booking must fail if the selected slot is in the past.
 * Double booking must be prevented on the backend.
+* Two bookings cannot exist for the same time, even for different event types.
 
 ### Time Rules
 
@@ -144,6 +177,21 @@ The MVP does not include:
 * UI date/time display format is `TBD`.
 
 ## Pages
+
+### Host Event Types Page
+
+Used by the host.
+
+Shows:
+
+* event type title field
+* event type description field
+* event type duration field
+* submit button
+* validation errors
+* list of created event types
+
+Authentication is not required for MVP.
 
 ### Host Availability Page
 
@@ -165,7 +213,9 @@ Used by the guest.
 
 Shows:
 
-* available slots
+* available event types
+* selected event type
+* free slots for the next 14 days
 * selected slot
 * guest name field
 * guest email field
@@ -179,6 +229,7 @@ Used by the host.
 Shows:
 
 * list of upcoming bookings
+* event type
 * slot date and time
 * guest name
 * guest email
@@ -189,12 +240,15 @@ Authentication is not required for MVP.
 
 The MVP is complete when:
 
+* host can create an event type
 * host can create an availability range
-* guest can see available slots derived from availability
+* guest can see available event types
+* guest can choose an event type
+* guest can see free slots for the next 14 days
 * guest can book a slot
-* booked slot disappears from available slots
+* booked time disappears from available slots
 * host can see the booking
-* double booking is prevented
+* double booking across all event types is prevented
 * past slots are not bookable
 * application can be run through Docker
 * core scenarios are covered by tests
@@ -206,3 +260,4 @@ The MVP is complete when:
 * Final deployment target
 * Testing stack
 * Docker topology
+* Whether event type duration can be changed after creation
