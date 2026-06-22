@@ -100,7 +100,7 @@ Rules:
 * Do not manually edit generated OpenAPI files.
 * If TypeSpec tooling is not configured yet, mark commands as `TBD` and propose the missing setup.
 
-Generated OpenAPI location: `TBD`.
+Generated OpenAPI location: `openapi/openapi.yaml`.
 
 ## Documentation Responsibility
 
