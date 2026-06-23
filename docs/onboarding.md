@@ -87,8 +87,8 @@ Generated OpenAPI files must not be edited manually.
 * API design: TypeSpec
 * API output: OpenAPI
 * Runtime: Docker
-* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; backend tests TBD
-* Database: TBD
+* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`
+* Database: in-memory store for MVP (resets on restart) — see `docs/adr/0002-backend-stack-and-storage.md`
 * Deployment: TBD
 
 ## Expected Commands
