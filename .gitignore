@@ -1,8 +1,8 @@
 # Dependencies
 node_modules/
 
-# TypeSpec build cache / generated internals
-.tsp/
+# TypeSpec default emitter output (this project emits to openapi/ instead)
+tsp-output/
 
 # Logs
 *.log

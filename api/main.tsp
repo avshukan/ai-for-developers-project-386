@@ -183,7 +183,7 @@ namespace CallBooking {
   ): AvailabilityCreatedResponse | ValidationErrorResponse;
 
   @summary("List available slots")
-  @doc("Returns available 30-minute slots for the selected event type within the next 14 days.")
+  @doc("Returns available 30-minute slots within the next 14 days. Slots are global across all event types; eventTypeId only validates that the event type exists and scopes the guest flow, it does not filter the slots.")
   @route("/event-types/{eventTypeId}/slots")
   @get
   op listSlots(

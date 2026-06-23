@@ -3,5 +3,7 @@ emit:
 
 options:
   "@typespec/openapi3":
-    emitter-output-dir: "{project-root}/openapi"
+    # {project-root} is the api/ dir (where this config lives), so go up one
+    # level to emit into the repo-root openapi/ directory.
+    emitter-output-dir: "{project-root}/../openapi"
     output-file: "openapi.yaml"
