@@ -1,0 +1,29 @@
+{
+  "name": "call-booking-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vue 3 + Vite SPA for the Call Booking MVP. Talks to the backend only through the public API contract (openapi/openapi.yaml).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@primeuix/themes": "^2.0.3",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.5.5",
+    "vue": "^3.5.38",
+    "vue-router": "^5.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.7",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vue-tsc": "^3.3.5"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

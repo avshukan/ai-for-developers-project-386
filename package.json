@@ -7,7 +7,8 @@
   "scripts": {
     "typespec": "tsp compile api --no-emit",
     "openapi": "tsp compile api",
-    "check": "npm run typespec && npm run openapi"
+    "check": "npm run typespec && npm run openapi",
+    "mock": "npx --yes @stoplight/prism-cli mock openapi/openapi.yaml"
   },
   "devDependencies": {
     "@typespec/compiler": "1.13.0",
