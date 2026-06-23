@@ -70,7 +70,7 @@ Rules:
 * `description` is required.
 * `durationMinutes` is required.
 * `durationMinutes` must be positive.
-* For MVP, event type duration is fixed at 30 minutes.
+* For MVP, event type duration is fixed at 30 minutes: the API accepts only `30` and rejects any other value with `400 validation_error`. The general "must be positive" rule applies once configurable duration is introduced (see open question).
 * Event type is created by the host.
 * Guest must select an event type before viewing slots.
 
@@ -272,7 +272,7 @@ Invalid when:
 * title is empty
 * description is empty
 * durationMinutes is missing
-* durationMinutes is less than or equal to zero
+* durationMinutes is not 30 (MVP fixed duration; the general rule is durationMinutes is less than or equal to zero once configurable duration is introduced)
 
 ### Availability Validation
 
@@ -287,7 +287,6 @@ Invalid when:
 Invalid when:
 
 * eventTypeId is missing
-* event type does not exist
 * startAt is missing
 * guestName is empty
 * guestEmail is empty
@@ -295,6 +294,11 @@ Invalid when:
 * selected slot is in the past
 * selected slot is outside availability
 * selected slot overlaps existing booking
+
+A booking that references a non-existent `eventTypeId` is not a validation
+error: the request shape is valid but the referenced resource is missing, so
+the API returns `404 not_found` rather than `400 validation_error`. A slot that
+overlaps an existing booking returns `409 booking_conflict`.
 
 ## Public Pages Security Limitation
 
