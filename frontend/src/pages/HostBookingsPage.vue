@@ -8,7 +8,7 @@ import { ApiError, listHostBookings, type Booking } from '../api';
 import { formatDateTime } from '../lib/datetime';
 
 const bookings = ref<Booking[] | null>(null);
-const loading = ref(false);
+const loading = ref(true);
 const loadError = ref<string | null>(null);
 
 async function load() {
@@ -55,7 +55,7 @@ onMounted(load);
     <AsyncSection
       :loading="loading"
       :error="loadError"
-      :empty="(bookings?.length ?? 0) === 0"
+      :empty="bookings !== null && bookings.length === 0"
       empty-message="No upcoming bookings yet."
       @retry="load"
     >

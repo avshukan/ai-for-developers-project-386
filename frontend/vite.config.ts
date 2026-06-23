@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite';
+/// <reference types="vitest/config" />
+import { defineConfig } from 'vitest/config';
 import vue from '@vitejs/plugin-vue';
 
 // Minimal Vite config for the Call Booking SPA.
@@ -8,5 +9,11 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     port: 5173,
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['src/test/setup.ts'],
+    css: false,
   },
 });

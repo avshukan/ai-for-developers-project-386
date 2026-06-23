@@ -21,7 +21,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Step 1 — event types
 const eventTypes = ref<EventType[] | null>(null);
-const eventTypesLoading = ref(false);
+const eventTypesLoading = ref(true);
 const eventTypesError = ref<string | null>(null);
 
 // Step 2 — slots for the selected event type
@@ -38,6 +38,8 @@ const submitting = ref(false);
 const bookingError = ref<string | null>(null);
 const bookingDetails = ref<string[]>([]);
 const confirmed = ref<Booking | null>(null);
+// Shown in the slots section after a 409, so it survives clearing the slot.
+const conflictMessage = ref<string | null>(null);
 
 const availableSlots = computed(() =>
   (slots.value ?? []).filter((slot) => slot.status === 'available'),
@@ -97,6 +99,7 @@ function selectEventType(eventType: EventType) {
   selectedSlot.value = null;
   confirmed.value = null;
   bookingError.value = null;
+  conflictMessage.value = null;
   slots.value = null;
   void loadSlots(eventType.id);
 }
@@ -104,6 +107,7 @@ function selectEventType(eventType: EventType) {
 function selectSlot(slot: Slot) {
   selectedSlot.value = slot;
   bookingError.value = null;
+  conflictMessage.value = null;
 }
 
 function isSelectedSlot(slot: Slot): boolean {
@@ -136,12 +140,15 @@ async function submitBooking() {
     guestEmail.value = '';
   } catch (error) {
     if (error instanceof ApiError) {
-      bookingError.value = error.message;
-      bookingDetails.value = error.details ?? [];
-      // The slot is gone (already booked / overlaps): refresh and reselect.
       if (error.status === 409) {
+        // The slot is gone (already booked / overlaps): surface a notice that
+        // persists after we clear the selection, and refresh the slot list.
+        conflictMessage.value = error.message;
         selectedSlot.value = null;
         void loadSlots(selectedEventType.value.id);
+      } else {
+        bookingError.value = error.message;
+        bookingDetails.value = error.details ?? [];
       }
     } else {
       bookingError.value = 'Failed to create booking.';
@@ -155,6 +162,7 @@ function bookAnother() {
   confirmed.value = null;
   selectedSlot.value = null;
   bookingError.value = null;
+  conflictMessage.value = null;
   if (selectedEventType.value) void loadSlots(selectedEventType.value.id);
 }
 
@@ -164,6 +172,7 @@ function changeEventType() {
   slots.value = null;
   confirmed.value = null;
   bookingError.value = null;
+  conflictMessage.value = null;
 }
 
 onMounted(loadEventTypes);
@@ -220,7 +229,7 @@ onMounted(loadEventTypes);
         <AsyncSection
           :loading="eventTypesLoading"
           :error="eventTypesError"
-          :empty="(eventTypes?.length ?? 0) === 0"
+          :empty="eventTypes !== null && eventTypes.length === 0"
           empty-message="No event types are available yet. Please check back later."
           @retry="loadEventTypes"
         >
@@ -257,6 +266,14 @@ onMounted(loadEventTypes);
           Available 30-minute slots for "{{ selectedEventType.title }}" over the next
           14 days.
         </p>
+        <Message
+          v-if="conflictMessage"
+          severity="warn"
+          :closable="false"
+          class="async__message"
+        >
+          {{ conflictMessage }}
+        </Message>
         <AsyncSection
           :loading="slotsLoading"
           :error="slotsError"

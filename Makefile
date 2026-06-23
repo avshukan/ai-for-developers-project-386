@@ -1,4 +1,4 @@
-.PHONY: install typespec openapi check frontend-install frontend-dev frontend-build frontend-typecheck api-mock
+.PHONY: install typespec openapi check frontend-install frontend-dev frontend-build frontend-typecheck frontend-test test api-mock
 
 install:
 	npm install
@@ -25,6 +25,12 @@ frontend-build:
 
 frontend-typecheck:
 	cd frontend && npm run typecheck
+
+frontend-test:
+	cd frontend && npm test
+
+# Aggregate test target (AGENTS.md expects `make test`).
+test: frontend-test
 
 # --- API mock (Prism) ---
 # Serves the generated OpenAPI contract as a mock API on http://localhost:4010.

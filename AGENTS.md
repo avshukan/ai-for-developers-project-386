@@ -22,7 +22,7 @@ Agents must optimize for:
 * API design: TypeSpec
 * Generated API format: OpenAPI
 * Runtime/package format: Docker
-* Tests: TBD
+* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; backend TBD
 * Deployment: TBD
 
 Do not replace the stack without an ADR.
@@ -210,7 +210,7 @@ Tests must focus on behavior, not implementation details.
 
 Test scenarios must come from `docs/product.md` and `docs/domain.md`.
 
-Testing stack is `TBD`.
+Frontend testing stack is decided in `docs/adr/0001-frontend-testing-strategy.md` (Vitest + Testing Library + MSW). Backend testing stack is `TBD`.
 
 Expected future test layers:
 

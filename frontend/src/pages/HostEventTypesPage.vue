@@ -17,7 +17,7 @@ import {
 const MVP_DURATION = 30;
 
 const eventTypes = ref<EventType[] | null>(null);
-const loading = ref(false);
+const loading = ref(true);
 const loadError = ref<string | null>(null);
 
 const title = ref('');
@@ -142,7 +142,7 @@ onMounted(load);
       <AsyncSection
         :loading="loading"
         :error="loadError"
-        :empty="(eventTypes?.length ?? 0) === 0"
+        :empty="eventTypes !== null && eventTypes.length === 0"
         empty-message="No event types yet. Create the first one above."
         @retry="load"
       >
