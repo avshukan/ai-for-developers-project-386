@@ -256,9 +256,8 @@ The MVP is complete when:
 
 ## TBD
 
-* Database choice
+* Durable database (post-MVP; in-memory store decided for MVP in `docs/adr/0002-backend-stack-and-storage.md`)
 * Exact UI date/time display format
 * Final deployment target
-* Testing stack
 * Docker topology
 * Whether configurable event type duration is needed after the first MVP

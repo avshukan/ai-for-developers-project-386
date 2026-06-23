@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Go backend build output
+backend/bin/
+
 # TypeSpec default emitter output (this project emits to openapi/ instead)
 tsp-output/
 

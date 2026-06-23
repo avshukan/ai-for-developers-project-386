@@ -363,7 +363,9 @@ Authentication must not be added unless product scope changes through ADR.
 
 ## Persistence Notes
 
-Storage choice is `TBD`.
+For the MVP, storage is an in-memory store that resets on restart
+(`docs/adr/0002-backend-stack-and-storage.md`). A durable database remains a
+future decision.
 
 The storage layer must support:
 
@@ -378,7 +380,7 @@ This may require a database-level constraint or transaction depending on storage
 
 ## TBD
 
-* Database choice
+* Durable database (post-MVP; in-memory store decided for MVP in `docs/adr/0002-backend-stack-and-storage.md`)
 * Exact UI date/time display format
 * Whether configurable event type duration is needed after the first MVP
 * Whether event types can be deleted

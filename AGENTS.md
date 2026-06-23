@@ -22,7 +22,7 @@ Agents must optimize for:
 * API design: TypeSpec
 * Generated API format: OpenAPI
 * Runtime/package format: Docker
-* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; backend TBD
+* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`
 * Deployment: TBD
 
 Do not replace the stack without an ADR.
@@ -210,7 +210,7 @@ Tests must focus on behavior, not implementation details.
 
 Test scenarios must come from `docs/product.md` and `docs/domain.md`.
 
-Frontend testing stack is decided in `docs/adr/0001-frontend-testing-strategy.md` (Vitest + Testing Library + MSW). Backend testing stack is `TBD`.
+Frontend testing stack is decided in `docs/adr/0001-frontend-testing-strategy.md` (Vitest + Testing Library + MSW). Backend testing stack is decided in `docs/adr/0002-backend-stack-and-storage.md` (Go standard `testing` + `net/http/httptest`).
 
 Expected future test layers:
 
@@ -266,7 +266,7 @@ Rules:
 * Keep storage choice documented.
 * Do not introduce authentication unless the product scope changes through ADR.
 
-Database choice is `TBD`.
+Storage is an in-memory store for the MVP (data resets on restart) — see `docs/adr/0002-backend-stack-and-storage.md`. A durable database remains a future decision.
 
 ## Docker Rules
 

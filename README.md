@@ -57,7 +57,7 @@ Two bookings cannot exist for the same time, even for different event types.
 * API source of truth: TypeSpec
 * Generated API format: OpenAPI
 * Runtime/package format: Docker
-* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; backend tests TBD
+* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`
 * Deployment: TBD
 
 OpenAPI is generated from TypeSpec.

@@ -11,7 +11,7 @@ split into two independently implemented parts that communicate only through the
 documented API contract:
 
 - **Frontend** — Vue 3 + Vite SPA (`frontend/`).
-- **Backend** — Go API service (`TBD`).
+- **Backend** — Go API service (`backend/`).
 
 The API contract is the source of truth. It is authored in TypeSpec
 (`api/main.tsp`) and generated into OpenAPI (`openapi/openapi.yaml`). Neither side
@@ -26,12 +26,26 @@ Vue 3 + Vite SPA. Talks to the backend only through the public API contract via
 
 ### Backend
 
-Go API service. Implements the contract generated from TypeSpec and enforces the
-core business rules (including the no-double-booking invariant). Details: `TBD`.
+Go API service (`backend/`) built on the standard library `net/http` — no web
+framework. It implements the contract generated from TypeSpec and enforces the
+core business rules (including the no-double-booking invariant). Layout:
+
+- `cmd/server` — entrypoint, configuration (env vars) and demo seed data.
+- `internal/domain` — entities (`EventType`, `Availability`, `Slot`, `Booking`).
+- `internal/slots` — pure slot-generation rules (30-minute slots, 14-day window,
+  past/booked exclusion).
+- `internal/store` — in-memory state and the booking invariants.
+- `internal/httpapi` — routing, input validation, contract error mapping, CORS.
+
+See `backend/README.md` for run instructions and
+`docs/adr/0002-backend-stack-and-storage.md` for the stack/storage decision.
 
 ### Storage
 
-`TBD` — see `AGENTS.md` (Database choice is `TBD`).
+In-memory store guarded by a mutex (`backend/internal/store`). Data resets on
+restart, which the MVP permits. The store owns the no-double-booking invariant:
+the existence, slot-availability, conflict and insert steps run under one lock.
+See `docs/adr/0002-backend-stack-and-storage.md`.
 
 ## Boundaries
 
