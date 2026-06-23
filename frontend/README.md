@@ -12,6 +12,7 @@ mock of that contract.
 - Vue 3 + Vite + TypeScript
 - Vue Router
 - PrimeVue (Aura theme) for UI components
+- Vitest + Testing Library + MSW for tests (see `docs/adr/0001-frontend-testing-strategy.md`)
 
 The stack follows the repo's documented decision in `AGENTS.md` / `README.md`.
 
@@ -56,6 +57,8 @@ Open http://localhost:5173.
 | `npm run build`     | Type-check (`vue-tsc`) + production build |
 | `npm run typecheck` | Type-check only                       |
 | `npm run preview`   | Preview the production build          |
+| `npm test`          | Run the test suite once (`TZ=UTC`)    |
+| `npm run test:watch`| Run tests in watch mode               |
 
 ## Structure
 
@@ -67,6 +70,7 @@ frontend/
     lib/         Date/time helpers
     pages/       Route pages (guest booking + host pages)
     router/      Vue Router setup
+    test/        Test setup, fixtures, MSW handlers
     App.vue
     main.ts
 ```
@@ -79,6 +83,18 @@ frontend/
 - `/host/bookings` — view upcoming bookings.
 
 Each data view has loading / error / empty / success states.
+
+## Testing
+
+```bash
+npm test                # or, from repo root: make frontend-test (alias: make test)
+```
+
+Vitest + Testing Library run in jsdom with MSW mocking the API at the network
+boundary, so the real `src/api` client runs against contract-shaped responses.
+Tests run with `TZ=UTC` for deterministic times. CI runs them in
+`.github/workflows/frontend-ci.yml`. See `docs/adr/0001-frontend-testing-strategy.md`
+for scope and rationale.
 
 ## Notes
 
