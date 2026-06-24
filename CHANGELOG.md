@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.1](https://github.com/avshukan/ai-for-developers-project-386/compare/v0.3.0...v0.3.1) (2026-06-24)
+
+
+### Documentation
+
+* add deployed app URL ([187e920](https://github.com/avshukan/ai-for-developers-project-386/commit/187e92005cc1cfec4a6556e6a06f5f6d585ffed7))
+* **api:** add production server to the API contract ([216c2f1](https://github.com/avshukan/ai-for-developers-project-386/commit/216c2f1aebff1f67b1f917e16716884ffa3e502b))
+* **backend:** document STATIC_DIR, internal/web and same-origin CORS ([f46ed0d](https://github.com/avshukan/ai-for-developers-project-386/commit/f46ed0d7bded23b1b904cc4cd5656c775beb366c))
+* fix booking-conflict status and drop resolved TBDs ([3246e18](https://github.com/avshukan/ai-for-developers-project-386/commit/3246e1877d52507dd18fd02f8e7f49839c29f8e0))
+
+
+### Build System
+
+* **make:** add dev, lint, format targets and full install ([f37b777](https://github.com/avshukan/ai-for-developers-project-386/commit/f37b777e2221d8b546c1612979cbfd7f7c2db001))
+
 ## [0.3.0](https://github.com/avshukan/ai-for-developers-project-386/compare/v0.2.1...v0.3.0) (2026-06-24)
 
 
