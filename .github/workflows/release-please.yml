@@ -1,0 +1,28 @@
+name: release-please
+
+# Reads Conventional Commits on main and keeps a "release PR" up to date with the
+# next SemVer version and generated CHANGELOG.md. Merging that PR tags and
+# publishes a GitHub release. See docs/adr/0004-release-automation-release-please.md.
+#
+# Prerequisite: Settings → Actions → General → Workflow permissions →
+# "Allow GitHub Actions to create and approve pull requests" must be enabled so
+# the default GITHUB_TOKEN can open the release PR.
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
