@@ -117,6 +117,19 @@ Docker packaging and deployment are described in
 `docs/adr/0005-deployment-combined-docker-render.md` and the Deployment section of
 `docs/architecture.md`.
 
+### Deploying via the Render MCP (optional)
+
+The repo ships a secret-free `.mcp.json` that wires the Render MCP server and reads
+the key from `${RENDER_API_KEY}`. To let an agent drive the Render deploy:
+
+1. Create a Render API key (Render dashboard → Account Settings → API Keys).
+2. Export it in the environment Claude Code runs in: `export RENDER_API_KEY=rnd_…`.
+3. Reload the Claude Code window, then `/mcp` should show `render` connected.
+
+The key never lives in the repo. For a local override, use `.mcp.local.json`
+(gitignored). Deployment itself does not need the MCP — Render auto-deploys `main`
+from GitHub.
+
 If a command is missing, add it only when it is relevant to the current workflow step. Otherwise mark it as `TBD`.
 
 ## First Project Milestones

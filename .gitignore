@@ -27,5 +27,6 @@ Thumbs.db
 .env.*
 !.env.example
 
-# Local MCP server config (may hold secrets; never commit)
-.mcp.json
+# Local MCP override (may hold secrets; never commit). The committed
+# .mcp.json holds no secret — it reads the key from ${RENDER_API_KEY}.
+.mcp.local.json
