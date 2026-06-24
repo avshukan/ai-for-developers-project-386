@@ -1,7 +1,11 @@
 .PHONY: install typespec openapi check \
 	frontend-install frontend-dev frontend-build frontend-typecheck frontend-test \
 	backend-build backend-run backend-test backend-vet backend-tidy \
-	test e2e-install e2e e2e-report api-mock
+	test e2e-install e2e e2e-report api-mock \
+	docker-build docker-run
+
+# Image tag for the combined app image (Go API + built SPA on one port).
+IMAGE ?= call-booking
 
 install:
 	npm install
@@ -71,3 +75,12 @@ e2e-report:
 # Serves the generated OpenAPI contract as a mock API on http://localhost:4010.
 api-mock:
 	npx --yes @stoplight/prism-cli mock openapi/openapi.yaml
+
+# --- Docker (single combined image: Go API + built SPA on one port) ---
+# See docs/adr/0005-deployment-combined-docker-render.md.
+docker-build:
+	docker build -t $(IMAGE) .
+
+# Run locally on :8080. The platform (Render) injects PORT in production.
+docker-run:
+	docker run --rm -e PORT=8080 -p 8080:8080 $(IMAGE)
