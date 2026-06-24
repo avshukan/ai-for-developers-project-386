@@ -6,6 +6,7 @@ using TypeSpec.Http;
 @service(#{
   title: "Call Booking API",
 })
+@server("https://call-booking-66ez.onrender.com", "Production (Render)")
 @server("http://localhost:8080", "Local development server")
 namespace CallBooking {
   @doc("A bookable meeting type created by the host.")
