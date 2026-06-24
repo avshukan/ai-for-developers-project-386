@@ -31,7 +31,7 @@ func newTestServer(t *testing.T) (http.Handler, domain.EventType) {
 		StartAt: at(2026, 6, 24, 9, 0),
 		EndAt:   at(2026, 6, 24, 12, 0),
 	})
-	return httpapi.NewRouter(s, "*"), et
+	return httpapi.NewRouter(s, "*", ""), et
 }
 
 func do(t *testing.T, h http.Handler, method, path, body string) *httptest.ResponseRecorder {

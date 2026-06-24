@@ -4,12 +4,19 @@ import (
 	"net/http"
 
 	"github.com/avshukan/ai-for-developers-project-386/backend/internal/store"
+	"github.com/avshukan/ai-for-developers-project-386/backend/internal/web"
 )
 
-// NewRouter wires the API routes from the contract and wraps them with CORS so
-// the separately-served SPA can call the backend cross-origin. allowedOrigin is
-// the value for Access-Control-Allow-Origin (e.g. "*" or the SPA's origin).
-func NewRouter(s *store.Store, allowedOrigin string) http.Handler {
+// NewRouter wires the API routes from the contract and wraps them with CORS.
+//
+// allowedOrigin is the value for Access-Control-Allow-Origin (e.g. "*" or the
+// SPA's origin). When staticDir is non-empty the built SPA is served from the
+// same origin under a catch-all route, so the API and the UI share one port
+// (the Docker/Render setup; see docs/adr/0005-deployment-combined-docker-render.md).
+// When staticDir is empty the backend is API-only and the SPA is served
+// separately (local dev, tests, e2e). The specific API patterns always take
+// precedence over the catch-all, so API routing is unaffected.
+func NewRouter(s *store.Store, allowedOrigin, staticDir string) http.Handler {
 	api := New(s)
 
 	mux := http.NewServeMux()
@@ -19,6 +26,10 @@ func NewRouter(s *store.Store, allowedOrigin string) http.Handler {
 	mux.HandleFunc("GET /event-types/{eventTypeId}/slots", api.listSlots)
 	mux.HandleFunc("POST /bookings", api.createBooking)
 	mux.HandleFunc("GET /host/bookings", api.listHostBookings)
+
+	if staticDir != "" {
+		mux.Handle("/", web.SPAHandler(staticDir))
+	}
 
 	return withCORS(mux, allowedOrigin)
 }

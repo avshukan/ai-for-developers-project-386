@@ -6,6 +6,8 @@
 //	CORS_ALLOWED_ORIGIN   Access-Control-Allow-Origin       (default *)
 //	SEED_DATA             seed demo data on startup unless  (default true)
 //	                      set to "false"
+//	STATIC_DIR            directory with the built SPA to   (default empty,
+//	                      serve from the same origin         API-only)
 //
 // Storage is in memory and resets on restart (see
 // docs/adr/0002-backend-stack-and-storage.md).
@@ -27,6 +29,7 @@ import (
 func main() {
 	addr := ":" + getenv("PORT", "8080")
 	allowedOrigin := getenv("CORS_ALLOWED_ORIGIN", "*")
+	staticDir := getenv("STATIC_DIR", "")
 
 	st := store.New()
 	if getenv("SEED_DATA", "true") != "false" {
@@ -36,7 +39,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:              addr,
-		Handler:           httpapi.NewRouter(st, allowedOrigin),
+		Handler:           httpapi.NewRouter(st, allowedOrigin, staticDir),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       15 * time.Second,
 		WriteTimeout:      15 * time.Second,
@@ -56,6 +59,9 @@ func main() {
 		}
 	}()
 
+	if staticDir != "" {
+		log.Printf("server: serving SPA from %s", staticDir)
+	}
 	log.Printf("server: listening on %s (CORS origin %q)", addr, allowedOrigin)
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("server: %v", err)
