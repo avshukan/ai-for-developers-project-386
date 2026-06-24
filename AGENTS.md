@@ -182,7 +182,7 @@ Create a new ADR if a decision changes.
 
 Agents must use `make` targets instead of guessing commands.
 
-Expected future targets:
+Standard targets (all implemented):
 
 ```bash
 make install

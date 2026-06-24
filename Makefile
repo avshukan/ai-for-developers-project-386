@@ -1,4 +1,4 @@
-.PHONY: install typespec openapi check \
+.PHONY: install dev lint format typespec openapi check \
 	frontend-install frontend-dev frontend-build frontend-typecheck frontend-test \
 	backend-build backend-run backend-test backend-vet backend-tidy \
 	test e2e-install e2e e2e-report api-mock \
@@ -7,8 +7,28 @@
 # Image tag for the combined app image (Go API + built SPA on one port).
 IMAGE ?= call-booking
 
+# Install all dependencies: API contract (root), frontend, and Go modules.
 install:
 	npm install
+	cd frontend && npm install
+	cd backend && go mod download
+
+# Run the whole app locally: Go API on :8080 and the SPA dev server on :5173,
+# with the SPA pointed at the local backend. Ctrl-C stops both.
+dev:
+	@trap 'kill 0' INT TERM; \
+		(cd backend && go run ./cmd/server) & \
+		(cd frontend && VITE_API_BASE_URL=http://localhost:8080 npm run dev) & \
+		wait
+
+# Static checks: Go vet + frontend type-check.
+lint:
+	cd backend && go vet ./...
+	cd frontend && npm run typecheck
+
+# Format Go sources. (The frontend has no formatter configured yet.)
+format:
+	cd backend && gofmt -w .
 
 typespec:
 	npm run typespec

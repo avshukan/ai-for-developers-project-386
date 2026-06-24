@@ -96,7 +96,7 @@ Generated OpenAPI files must not be edited manually.
 
 Use `make` commands only.
 
-Expected future commands:
+Common commands:
 
 ```bash
 make install
