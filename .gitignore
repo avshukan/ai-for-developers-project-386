@@ -26,3 +26,6 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Local MCP server config (may hold secrets; never commit)
+.mcp.json
