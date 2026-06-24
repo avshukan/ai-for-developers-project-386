@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/avshukan/ai-for-developers-project-386/compare/v0.2.0...v0.2.1) (2026-06-24)
+
+
+### CI
+
+* bump workflow actions to node24 majors ([b5b7f02](https://github.com/avshukan/ai-for-developers-project-386/commit/b5b7f0281f1e019f182a8ee4e47d6991e4df6d5d))
+
 ## [0.2.0](https://github.com/avshukan/ai-for-developers-project-386/compare/v0.1.0...v0.2.0) (2026-06-24)
 
 
