@@ -17,6 +17,7 @@ internal/domain   entities: EventType, Availability, Slot, Booking
 internal/slots    pure slot-generation rules (30-min, 14-day window, past/booked)
 internal/store    in-memory state + the no-double-booking invariant
 internal/httpapi  routing, input validation, contract error mapping, CORS
+internal/web      serves the built SPA when STATIC_DIR is set (combined image)
 ```
 
 ## Run
@@ -37,7 +38,7 @@ go run ./cmd/server
 ```
 
 The server listens on `http://localhost:8080` by default and seeds a couple of
-event types plus a week of availability so the app is usable immediately.
+event types plus two weeks of availability so the app is usable immediately.
 
 ### Configuration (environment variables)
 
@@ -46,6 +47,13 @@ event types plus a week of availability so the app is usable immediately.
 | `PORT`                | `8080`  | TCP port to listen on                                |
 | `CORS_ALLOWED_ORIGIN` | `*`     | `Access-Control-Allow-Origin` value                  |
 | `SEED_DATA`           | `true`  | Seed demo data on startup; set to `false` to disable |
+| `STATIC_DIR`          | (empty) | Directory with the built SPA to serve from the same origin; empty = API-only |
+
+In the combined Docker image the server also serves the built SPA from
+`STATIC_DIR`, so the SPA and API share one origin and CORS is not exercised.
+`CORS_ALLOWED_ORIGIN` only matters when the SPA is served from a different origin
+(local dev against the Prism mock, or a split deploy). See
+`../docs/adr/0005-deployment-combined-docker-render.md`.
 
 ## Connecting the frontend
 
