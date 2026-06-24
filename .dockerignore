@@ -1,0 +1,33 @@
+# Keep the build context small and reproducible. Source is copied per stage in
+# the Dockerfile; everything below is either rebuilt, irrelevant, or local state.
+.git
+.github
+.gitignore
+
+# Dependencies and build outputs (re-created inside the image)
+**/node_modules
+frontend/dist
+frontend/dist-ssr
+backend/bin
+
+# Local env / editor / OS state
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.e2e
+**/*.local
+.vscode
+.idea
+.DS_Store
+
+# Not needed to build or run the app image
+e2e
+docs
+scripts
+skills
+openapi
+api
+*.md
+!README.md
+playwright-report
+test-results
