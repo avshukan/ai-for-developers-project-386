@@ -3,7 +3,8 @@ dist/
 dist-ssr/
 *.local
 
-# Local env overrides (keep .env.example tracked)
+# Local env overrides (keep .env.example and the tracked e2e mode file)
 .env
 .env.*
 !.env.example
+!.env.e2e

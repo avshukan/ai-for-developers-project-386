@@ -1,7 +1,7 @@
 .PHONY: install typespec openapi check \
 	frontend-install frontend-dev frontend-build frontend-typecheck frontend-test \
 	backend-build backend-run backend-test backend-vet backend-tidy \
-	test api-mock
+	test e2e-install e2e e2e-report api-mock
 
 install:
 	npm install
@@ -52,7 +52,20 @@ backend-tidy:
 	cd backend && go mod tidy
 
 # Aggregate test target (AGENTS.md expects `make test`).
+# Unit/component layers only; e2e is separate (needs a browser + both servers).
 test: frontend-test backend-test
+
+# --- Integration tests (Playwright; real SPA + real backend) ---
+# See docs/adr/0003-integration-tests-playwright.md. Requires Node and Go.
+# Playwright boots the backend and frontend itself; no manual server start needed.
+e2e-install:
+	cd e2e && npm install && npm run install:browsers
+
+e2e:
+	cd e2e && npm test
+
+e2e-report:
+	cd e2e && npm run report
 
 # --- API mock (Prism) ---
 # Serves the generated OpenAPI contract as a mock API on http://localhost:4010.
