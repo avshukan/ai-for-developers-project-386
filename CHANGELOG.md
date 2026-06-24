@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/avshukan/ai-for-developers-project-386/compare/v0.2.1...v0.3.0) (2026-06-24)
+
+
+### Features
+
+* **backend:** serve built SPA via STATIC_DIR ([8fa8f81](https://github.com/avshukan/ai-for-developers-project-386/commit/8fa8f8146d914adabde427a6320c652f5ce0d993))
+
+
+### Documentation
+
+* **adr:** add ADR 0005 for combined Docker deploy on Render ([93042d1](https://github.com/avshukan/ai-for-developers-project-386/commit/93042d12294cfdcc2a5de24df0b31981c768e8b3))
+
+
+### Build System
+
+* **docker:** add multi-stage Dockerfile and .dockerignore ([753686e](https://github.com/avshukan/ai-for-developers-project-386/commit/753686e6e4e6bfbeeacc2a439f1aee096df36f26))
+* **make:** add docker-build and docker-run targets ([46a7922](https://github.com/avshukan/ai-for-developers-project-386/commit/46a7922c3a4fd57179e89e1c3f8c8fcb620ed597))
+
 ## [0.2.1](https://github.com/avshukan/ai-for-developers-project-386/compare/v0.2.0...v0.2.1) (2026-06-24)
 
 
