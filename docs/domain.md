@@ -293,12 +293,13 @@ Invalid when:
 * guestEmail has invalid MVP format
 * selected slot is in the past
 * selected slot is outside availability
-* selected slot overlaps existing booking
 
-A booking that references a non-existent `eventTypeId` is not a validation
-error: the request shape is valid but the referenced resource is missing, so
-the API returns `404 not_found` rather than `400 validation_error`. A slot that
-overlaps an existing booking returns `409 booking_conflict`.
+Two booking failures are deliberately **not** `400 validation_error`:
+
+* A booking that references a non-existent `eventTypeId` has a valid request
+  shape but a missing resource, so the API returns `404 not_found`.
+* A booking whose slot overlaps an existing booking is a valid request that
+  loses a race for the slot, so the API returns `409 booking_conflict`.
 
 ## Public Pages Security Limitation
 
@@ -385,4 +386,3 @@ This may require a database-level constraint or transaction depending on storage
 * Whether configurable event type duration is needed after the first MVP
 * Whether event types can be deleted
 * Whether availability can be edited or deleted after MVP
-* Exact generated OpenAPI location

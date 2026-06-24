@@ -258,6 +258,7 @@ The MVP is complete when:
 
 * Durable database (post-MVP; in-memory store decided for MVP in `docs/adr/0002-backend-stack-and-storage.md`)
 * Exact UI date/time display format
-* Final deployment target
-* Docker topology
 * Whether configurable event type duration is needed after the first MVP
+
+Deployment is no longer `TBD`: the app ships as a single combined Docker image
+deployed to Render — see `docs/adr/0005-deployment-combined-docker-render.md`.
