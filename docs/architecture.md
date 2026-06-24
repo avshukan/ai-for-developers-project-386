@@ -49,7 +49,9 @@ See `docs/adr/0002-backend-stack-and-storage.md`.
 
 ## Boundaries
 
-- Frontend and backend are implemented and deployed independently.
+- Frontend and backend are implemented and built independently; they are
+  combined into a single image only at runtime for deployment (see Deployment
+  below and `docs/adr/0005-deployment-combined-docker-render.md`).
 - The only coupling between them is the API contract (`openapi/openapi.yaml`,
   generated from `api/main.tsp`).
 - Business rules and input validation live in the backend.
@@ -85,8 +87,18 @@ Three layers, each described in an ADR:
 
 ## Deployment
 
-`TBD` — the application must be runnable through Docker. Final deployment target
-is `TBD`.
+The app ships as a **single combined Docker image**: a multi-stage `Dockerfile`
+builds the SPA and the Go server, and the running container serves both the API
+and the built SPA from one port (`PORT`). The SPA is served from `STATIC_DIR`
+(set in the image) via a catch-all route in `backend/internal/web`; with
+`STATIC_DIR` empty the backend is API-only, so local dev, unit tests, and the
+Playwright e2e suite keep running the two parts separately.
+
+Build and run locally with `make docker-build` and `make docker-run` (serves on
+http://localhost:8080). The image deploys to **Render** as a Docker web service
+(free tier; `PORT` injected by the platform); **Railway** is the documented
+fallback. The public URL is recorded in `README.md`. See
+`docs/adr/0005-deployment-combined-docker-render.md`.
 
 ## Related documents
 

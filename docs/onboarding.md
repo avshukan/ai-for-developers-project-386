@@ -108,10 +108,14 @@ make lint
 make format
 make typespec
 make openapi
-make docker-build
-make docker-run
+make docker-build    # build the combined app image (Go API + built SPA)
+make docker-run      # run it locally on http://localhost:8080
 make check
 ```
+
+Docker packaging and deployment are described in
+`docs/adr/0005-deployment-combined-docker-render.md` and the Deployment section of
+`docs/architecture.md`.
 
 If a command is missing, add it only when it is relevant to the current workflow step. Otherwise mark it as `TBD`.
 

@@ -59,7 +59,7 @@ Two bookings cannot exist for the same time, even for different event types.
 * Runtime/package format: Docker
 * Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`; Playwright integration tests in `e2e/` — see `docs/adr/0003-integration-tests-playwright.md`
 * Releases: release-please + Conventional Commits — see `docs/adr/0004-release-automation-release-please.md`
-* Deployment: TBD
+* Deployment: single combined Docker image (Go API + built SPA on one port) on Render — see `docs/adr/0005-deployment-combined-docker-render.md`
 
 OpenAPI is generated from TypeSpec.
 Generated OpenAPI files must not be edited manually.
@@ -70,6 +70,28 @@ Generated OpenAPI files must not be edited manually.
 * `make e2e` — Playwright integration tests: the real SPA driven against the
   real backend in a browser, covering the main booking scenario. Run
   `make e2e-install` once first (installs deps + a browser). See `e2e/README.md`.
+
+## Running with Docker
+
+The whole app ships as one image: the Go server serves both the API and the built
+SPA on a single port.
+
+```bash
+make docker-build              # build the image (tag: call-booking)
+make docker-run                # run on http://localhost:8080
+```
+
+The container listens on the `PORT` environment variable (default `8080`), so it
+runs unchanged on platforms that inject `PORT`. See
+`docs/adr/0005-deployment-combined-docker-render.md`.
+
+## Deployment
+
+Live app: _TBD — link added after the first deploy._
+
+Deployed as a single Docker web service on Render (Railway as fallback); `PORT` is
+injected by the platform. See `docs/architecture.md` (Deployment) and
+`docs/adr/0005-deployment-combined-docker-render.md`.
 
 ## Commits and releases
 
