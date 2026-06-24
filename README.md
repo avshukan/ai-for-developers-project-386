@@ -87,10 +87,13 @@ runs unchanged on platforms that inject `PORT`. See
 
 ## Deployment
 
-Live app: _TBD — link added after the first deploy._
+**Live app: https://call-booking-66ez.onrender.com**
 
 Deployed as a single Docker web service on Render (Railway as fallback); `PORT` is
-injected by the platform. See `docs/architecture.md` (Deployment) and
+injected by the platform. Render auto-deploys the `main` branch from the
+`Dockerfile`. On the free instance the service spins down when idle, so the first
+request after a pause is slow (cold start) and in-memory data resets — demo data
+re-seeds automatically on start. See `docs/architecture.md` (Deployment) and
 `docs/adr/0005-deployment-combined-docker-render.md`.
 
 ## Commits and releases
