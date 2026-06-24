@@ -89,9 +89,10 @@ func seed(st *store.Store) {
 		DurationMinutes: 30,
 	})
 
-	// Publish 09:00-12:00 and 14:00-17:00 UTC for the next 7 days.
+	// Publish 09:00-12:00 and 14:00-17:00 UTC for the next 14 days, matching the
+	// documented slot window (docs/domain.md, domain.SlotWindow).
 	day := time.Now().UTC().Truncate(24 * time.Hour)
-	for i := 1; i <= 7; i++ {
+	for i := 1; i <= 14; i++ {
 		d := day.AddDate(0, 0, i)
 		st.CreateAvailability(store.CreateAvailabilityInput{
 			StartAt: d.Add(9 * time.Hour),
