@@ -22,7 +22,8 @@ Agents must optimize for:
 * API design: TypeSpec
 * Generated API format: OpenAPI
 * Runtime/package format: Docker
-* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`
+* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`; Playwright integration tests (`e2e/`) — see `docs/adr/0003-integration-tests-playwright.md`
+* Releases: release-please + Conventional Commits — see `docs/adr/0004-release-automation-release-please.md`
 * Deployment: TBD
 
 Do not replace the stack without an ADR.
@@ -210,13 +211,15 @@ Tests must focus on behavior, not implementation details.
 
 Test scenarios must come from `docs/product.md` and `docs/domain.md`.
 
-Frontend testing stack is decided in `docs/adr/0001-frontend-testing-strategy.md` (Vitest + Testing Library + MSW). Backend testing stack is decided in `docs/adr/0002-backend-stack-and-storage.md` (Go standard `testing` + `net/http/httptest`).
+Frontend testing stack is decided in `docs/adr/0001-frontend-testing-strategy.md` (Vitest + Testing Library + MSW). Backend testing stack is decided in `docs/adr/0002-backend-stack-and-storage.md` (Go standard `testing` + `net/http/httptest`). Integration testing is decided in `docs/adr/0003-integration-tests-playwright.md` (Playwright, in `e2e/`).
 
-Expected future test layers:
+Test layers (all present):
 
-* backend API tests
-* frontend component or integration tests
-* end-to-end tests for core user scenarios
+* backend API tests — Go `testing` + `httptest` (`backend/`)
+* frontend component/integration tests — Vitest + Testing Library + MSW (`frontend/`)
+* end-to-end tests for core user scenarios — Playwright, real SPA + real backend (`e2e/`), run via `make e2e`
+
+Integration tests must drive the documented user scenarios (`docs/product.md`) in a real browser against a real backend; do not mock the API there.
 
 ## Dependency Rules
 
@@ -320,6 +323,41 @@ Rules:
 * Do not change generated files without changing their source.
 * Do not use destructive git commands.
 * Do not commit unless explicitly asked.
+
+## Commit Convention
+
+All commits — including those authored by AI agents — must follow
+[Conventional Commits](https://www.conventionalcommits.org/). This is what lets
+release-please derive versions and the changelog automatically; see
+`docs/adr/0004-release-automation-release-please.md`.
+
+Format:
+
+```text
+<type>(<optional scope>): <short summary>
+
+<optional body>
+
+<optional footer(s)>
+```
+
+Allowed types and their effect on the release:
+
+* `feat:` — a user-facing feature (bumps the **minor** version)
+* `fix:` — a bug fix (bumps the **patch** version)
+* `feat!:` / `fix!:` / a `BREAKING CHANGE:` footer — a breaking change (bumps the
+  **major** version; while `0.x`, it bumps the minor)
+* `docs:`, `test:`, `refactor:`, `perf:`, `build:`, `ci:`, `chore:` — no version
+  bump; some appear in the changelog (see `release-please-config.json`)
+
+Rules:
+
+* Use a scope that matches the area changed where it helps, e.g. `feat(frontend):`,
+  `fix(backend):`, `docs(adr):`, `ci(e2e):`.
+* Keep the summary imperative and under ~72 characters.
+* One logical change per commit (matches "Change Size" above).
+* Mark breaking API/contract/stack changes with `!` or a `BREAKING CHANGE:`
+  footer so the version bump is correct.
 
 ## Completion Checklist
 

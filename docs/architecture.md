@@ -54,11 +54,34 @@ See `docs/adr/0002-backend-stack-and-storage.md`.
   generated from `api/main.tsp`).
 - Business rules and input validation live in the backend.
 
+## Testing
+
+Three layers, each described in an ADR:
+
+- **Frontend unit/component** — Vitest + Testing Library + MSW (`frontend/`),
+  API mocked. See `docs/adr/0001-frontend-testing-strategy.md`.
+- **Backend unit/API** — Go `testing` + `httptest` (`backend/`). See
+  `docs/adr/0002-backend-stack-and-storage.md`.
+- **Integration (e2e)** — Playwright (`e2e/`) drives the real SPA against the
+  real backend in a browser, covering the main booking scenario; nothing is
+  mocked. Playwright boots both servers itself. See
+  `docs/adr/0003-integration-tests-playwright.md`.
+
+## Continuous integration and releases
+
+- CI runs in GitHub Actions: `frontend-ci.yml` (frontend checks), `e2e.yml`
+  (integration tests across both apps), and the locked `hexlet-check.yml`.
+- Releases are automated with release-please (`release-please.yml`): merges to
+  `main` keep a release PR updated with the next SemVer version and generated
+  `CHANGELOG.md`. This relies on Conventional Commit messages. See
+  `docs/adr/0004-release-automation-release-please.md`.
+
 ## Cross-cutting decisions
 
 - Date-time values use UTC ISO 8601.
 - Slot duration is fixed to 30 minutes in the MVP.
 - Architecture decisions are recorded as ADRs in `docs/adr/`.
+- Commits follow Conventional Commits (`AGENTS.md` → "Commit Convention").
 
 ## Deployment
 

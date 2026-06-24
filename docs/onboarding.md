@@ -87,8 +87,9 @@ Generated OpenAPI files must not be edited manually.
 * API design: TypeSpec
 * API output: OpenAPI
 * Runtime: Docker
-* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`
+* Tests: Vitest + Testing Library + MSW (frontend) — see `docs/adr/0001-frontend-testing-strategy.md`; Go standard `testing` + `httptest` (backend) — see `docs/adr/0002-backend-stack-and-storage.md`; Playwright integration tests in `e2e/` — see `docs/adr/0003-integration-tests-playwright.md`
 * Database: in-memory store for MVP (resets on restart) — see `docs/adr/0002-backend-stack-and-storage.md`
+* Releases: release-please + Conventional Commits — see `docs/adr/0004-release-automation-release-please.md`
 * Deployment: TBD
 
 ## Expected Commands
@@ -101,6 +102,8 @@ Expected future commands:
 make install
 make dev
 make test
+make e2e            # Playwright integration tests (boots both servers)
+make e2e-install    # one-time: install e2e deps + browser
 make lint
 make format
 make typespec
